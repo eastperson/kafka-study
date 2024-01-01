@@ -1,6 +1,9 @@
 # 카프카 완벽 가이드
 
+[강의정보](https://www.inflearn.com/course/%EC%B9%B4%ED%94%84%EC%B9%B4-%EC%99%84%EB%B2%BD%EA%B0%80%EC%9D%B4%EB%93%9C-%EC%BD%94%EC%96%B4/dashboard)
+
 [정리 노션](https://www.notion.so/f1d3878bab634ded87b9c15007b21bdc?pvs=4)
+
 [예제 코드](https://github.com/chulminkw)
 
 ## 코어
