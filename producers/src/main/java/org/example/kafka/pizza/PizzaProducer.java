@@ -69,7 +69,7 @@ public class PizzaProducer {
             kafkaProducer.send(producerRecord, (metadata, exception) -> {
                 if (exception == null) {
                     logger.info("async message:" + pMessage.get("key") + " partition:" + metadata.partition() +
-                            " offset:" + metadata.offset());
+                            " offset:" + metadata.offset() + " value:" + producerRecord.value());
                 } else {
                     logger.error("exception error from broker " + exception.getMessage());
                 }
@@ -78,7 +78,7 @@ public class PizzaProducer {
             try {
                 RecordMetadata metadata = kafkaProducer.send(producerRecord).get();
                 logger.info("sync message:" + pMessage.get("key") + " partition:" + metadata.partition() +
-                        " offset:" + metadata.offset());
+                        " offset:" + metadata.offset(), " value:" + producerRecord.value());
             } catch (ExecutionException e) {
                 logger.error(e.getMessage());
             } catch (InterruptedException e) {
@@ -110,7 +110,7 @@ public class PizzaProducer {
         // idempotence
         props.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "6");
 //        props.setProperty(ProducerConfig.ACKS_CONFIG, "0");
-        props.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+//        props.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
 
         //KafkaProducer object creation
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<String, String>(props);

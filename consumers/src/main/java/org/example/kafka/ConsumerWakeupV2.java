@@ -13,9 +13,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
-public class ConsumerWakeup {
+public class ConsumerWakeupV2 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerWakeup.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerWakeupV2.class.getName());
     private static final String KAFKA_ADDRESS_LOCAL = "ubuntu.orb.local:9092";
     private static final String SIMPLE_TOPIC_NAME = "pizza-topic";
 
@@ -27,8 +27,9 @@ public class ConsumerWakeup {
         properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
-        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "group_01-static");
-        properties.setProperty(ConsumerConfig.GROUP_INSTANCE_ID_CONFIG, "3");
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "group_02");
+        // 60 초
+        properties.setProperty(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "60000");
 
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
         kafkaConsumer.subscribe(List.of(SIMPLE_TOPIC_NAME));
@@ -49,13 +50,23 @@ public class ConsumerWakeup {
             }
         }));
 
+        int loopCnt = 0;
         try {
             while (true) {
                 // 마지막 Offset 기준으로 다음 메시지를 가져온다
                 // 여러개의 레코드를 가져온다(batch)
                 ConsumerRecords<String, String> consumerRecords = kafkaConsumer.poll(Duration.ofMillis(1000));
+                LOGGER.info("######## loopCnt:{}, consumerRecords count:{}", loopCnt++, consumerRecords.count());
                 for (ConsumerRecord<String, String> record : consumerRecords) {
                     LOGGER.info("record key:{}, record value:{}, partition:{}, record offset:{}", record.key(), record.value(), record.partition(), record.offset());
+                }
+
+                try {
+                    LOGGER.info("main thread is sleeping {} ms during while loop", loopCnt*10000);
+                    // 10초 + 루프별 10초
+                    Thread.sleep(10000 + loopCnt*10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         } catch (WakeupException e) {

@@ -3,7 +3,9 @@ package org.example.kafka;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.CooperativeStickyAssignor;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.RoundRobinAssignor;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
@@ -13,11 +15,11 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
-public class ConsumerWakeup {
+public class ConsumerMTopicRebalance {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerWakeup.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerMTopicRebalance.class.getName());
     private static final String KAFKA_ADDRESS_LOCAL = "ubuntu.orb.local:9092";
-    private static final String SIMPLE_TOPIC_NAME = "pizza-topic";
+//    private static final String SIMPLE_TOPIC_NAME = "pizza-topic";
 
     public static void main(String[] args) {
         Properties properties = new Properties();
@@ -27,11 +29,14 @@ public class ConsumerWakeup {
         properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
-        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "group_01-static");
-        properties.setProperty(ConsumerConfig.GROUP_INSTANCE_ID_CONFIG, "3");
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "group-assign");
+        properties.setProperty(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG, CooperativeStickyAssignor.class.getName());
+
+        // 60 초
+        properties.setProperty(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "60000");
 
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-        kafkaConsumer.subscribe(List.of(SIMPLE_TOPIC_NAME));
+        kafkaConsumer.subscribe(List.of("topic-p3-t1", "topic-p3-t2"));
 
         // main thread 참조 변수
         Thread mainThread = Thread.currentThread();
@@ -55,7 +60,7 @@ public class ConsumerWakeup {
                 // 여러개의 레코드를 가져온다(batch)
                 ConsumerRecords<String, String> consumerRecords = kafkaConsumer.poll(Duration.ofMillis(1000));
                 for (ConsumerRecord<String, String> record : consumerRecords) {
-                    LOGGER.info("record key:{}, record value:{}, partition:{}, record offset:{}", record.key(), record.value(), record.partition(), record.offset());
+                    LOGGER.info("topic:{}, record key:{}, record value:{}, partition:{}, record offset:{}", record.topic(), record.key(), record.value(), record.partition(), record.offset());
                 }
             }
         } catch (WakeupException e) {
