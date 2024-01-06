@@ -13,6 +13,8 @@
 - [섹션2:Java 기반 Producer 구현 실습 및 Producer 내부 메커니즘 이해 - 01](https://www.notion.so/2-Java-Producer-Producer-01-adb43e2e83ad4e60a2b76d4a498341ef)
 - [섹션3:Java 기반 Producer 구현 실습 및 Producer 내부 메커니즘 이해 - 02](https://www.notion.so/3-Java-Producer-Producer-02-6504cdfd78914600b140d31396a8ae06)
 - [섹션4:Java 기반 Consumer 구현 실습 및 Consumer 내부 메커니즘 이해 - 01](https://www.notion.so/4-Java-Consumer-Consumer-01-58f38c8493634194830d268e3d356bc4)
+- [섹션5:Java 기반 Consumer 구현 실습 및 Consumer 내부 메커니즘 이해 - 02](https://www.notion.so/5-Java-Consumer-Consumer-02-3bfd7b56c8f741bd9c908aec3113cc9a)
+- [섹션6:Java 기반 Consumer 구현 실습 및 Consumer 내부 메커니즘 이해 - 03](https://www.notion.so/6-Java-Consumer-Consumer-03-b9ac46c1b528480f9be93685baa4c64a)
 
 
 ## 커넥트(Connect)
