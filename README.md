@@ -16,7 +16,7 @@
 - [섹션5:Java 기반 Consumer 구현 실습 및 Consumer 내부 메커니즘 이해 - 02](https://www.notion.so/5-Java-Consumer-Consumer-02-3bfd7b56c8f741bd9c908aec3113cc9a)
 - [섹션6:Java 기반 Consumer 구현 실습 및 Consumer 내부 메커니즘 이해 - 03](https://www.notion.so/6-Java-Consumer-Consumer-03-b9ac46c1b528480f9be93685baa4c64a)
 - [섹션 7 - 실전 카프카 Producer 애플리케이션 구현](https://www.notion.so/7-Producer-31c430ee69754eaaa8634648b5905642)
-
+- [섹션 8 - 실전 카프카 Consumer 애플리케이션 구현](https://www.notion.so/8-Consumer-f90fc39425584bc9b5e1e13611577474)
 
 ## 커넥트(Connect)
 
